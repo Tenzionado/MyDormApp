@@ -1,3 +1,24 @@
+<?php
+    session_start();
+    include('../config/db_config.php');
+    if(!$_SESSION['user_name']){
+        header('location: ../login.php');
+        exit();
+    }
+
+    $role = $_SESSION['user_role'];
+    $department = $_SESSION['user_department'];
+
+    if(isset($department)){
+        $department_query = $conn->query("SELECT dormitory FROM dormitory where id=$department");
+
+        $dorm = $department_query->fetch_assoc();
+
+        $conn->close();
+    }
+
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -13,7 +34,7 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Home
+                        <?php echo $dorm['dormitory'] ?>
                     </h1>
                 </section>
 
@@ -23,7 +44,12 @@
                     <div class="box box-default">
                         <div class="box-body">
                             <div>
-                                <p id="verse_qoutes"><strong>John 15:12-15 </strong> My command is this: Love each other as I have loved you. Greater love has no one than this: to lay down one's life for one's friends. You are my friends if you do what I command. I no longer call you servants, because a servant does not know his master's business. Instead, I have called you friends, for everything that I learned from my Father I have made known to you.</p>
+                                <p id="verse_qoutes"><strong>John 15:12-15 </strong> My command is this: Love each other
+                                    as I have loved you. Greater love has no one than this: to lay down one's life for
+                                    one's friends. You are my friends if you do what I command. I no longer call you
+                                    servants, because a servant does not know his master's business. Instead, I have
+                                    called you friends, for everything that I learned from my Father I have made known
+                                    to you.</p>
                                 <br>
                                 <a href="#myModal" data-toggle="modal" class="btn btn-sm btn-info">Worship
                                     attendance</a>
@@ -47,21 +73,24 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">Create Attendance</h4>
                     </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>Create Worship Attendance</label>
-                            <div class="input-group date">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
+                    <form id="id_form" action="" method="post">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Create Worship Attendance</label>
+                                <div class="input-group date">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input type="text" class="form-control pull-right" id="datepicker">
                                 </div>
-                                <input type="text" class="form-control pull-right" id="datepicker">
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <a href="w_attendance.php" class="btn btn-success" >Create</a>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Create</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+
                 </div>
             </div>
         </div>
@@ -88,6 +117,8 @@
         $('#datepicker').datepicker({
             autoclose: true
         });
+
+
     });
     </script>
 </body>

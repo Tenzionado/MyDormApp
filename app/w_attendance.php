@@ -1,3 +1,23 @@
+<?php
+    session_start();
+    include('../config/db_config.php');
+    if(!$_SESSION['user_name']){
+        header('location: ../login.php');
+        exit();
+    }
+
+    $role = $_SESSION['user_role'];
+    $department = $_SESSION['user_department'];
+
+    if(isset($department)){
+        $department_query = $conn->query("SELECT dormitory FROM dormitory where id=$department");
+
+        $dorm = $department_query->fetch_assoc();
+
+        $conn->close();
+    }
+
+?>
 <!DOCTYPE html>
 <html>
 
@@ -25,7 +45,7 @@
                                         <input type="text" id="id_number" style="text-align:center;"
                                             class="form-control input-lg">
                                     </div>
-                                    <a href="#" class="btn btn-info btn-block">Login</a>
+                                    <!-- <a href="#" class="btn btn-info btn-block">Login</a> -->
                                 </div>
                             </div>
                         </div>
@@ -52,34 +72,13 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
+                                        <!-- <tr>
                                             <td>2047584</td>
                                             <td>Rey Eduard </td>
                                             <td>Torres</td>
                                             <td> 10</td>
                                             <td>11</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2047585</td>
-                                            <td>Joshua</td>
-                                            <td>Garson</td>
-                                            <td>2</td>
-                                            <td>3</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2015667</td>
-                                            <td>Jervey</td>
-                                            <td>PesiganP</td>
-                                            <td>9</td>
-                                            <td>3</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2055356</td>
-                                            <td>Kenneth</td>
-                                            <td>Guingona</td>
-                                            <td>4</td>
-                                            <td>7</td>
-                                        </tr>
+                                        </tr> -->
                                     </tbody>
                                     <!-- <tfoot>
                                     <tr>
